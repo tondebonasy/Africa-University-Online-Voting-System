@@ -1,0 +1,15 @@
+@model IEnumerable<OnlineVotingSystem.Models.Candidate>
+@{ ViewBag.Title = "Candidates"; }
+<section class="management-panel card">
+    <div class="management-toolbar"><p>Manage candidate profiles and manifesto documents.</p>@Html.ActionLink("Create new", "Create", null, new { @class = "btn btn-primary" })</div>
+    @if (!Model.Any()) {
+        <div class="empty-state"><h2>No records yet.</h2><p>Records will appear here once they have been added.</p></div>
+    } else {
+        <div class="table-filter"><label for="record-search" class="form-label">Find a record</label><input id="record-search" type="search" class="form-control" placeholder="Search this list" data-table-filter="records-table" /><span class="field-hint" data-table-status role="status">@Model.Count() records</span></div>
+        <div class="table-responsive"><table id="records-table" class="table align-middle"><thead><tr><th>Candidate</th><th>Linked student</th><th>Manifesto</th><th class="text-end">Actions</th></tr></thead><tbody>
+        @foreach (var item in Model) { <tr><td><strong>@item.name</strong></td><td>@(item.AspNetUser != null ? item.AspNetUser.Email : "Not linked")</td><td>@(String.IsNullOrWhiteSpace(item.manifesto) ? "Not uploaded" : "Available")</td><td><div class="row-actions">@Html.ActionLink("Edit", "Edit", new { id = item.id }, new { @class = "btn btn-sm btn-outline-secondary" }) @Html.ActionLink("Details", "Details", new { id = item.id }, new { @class = "btn btn-sm btn-outline-secondary" }) @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-sm btn-outline-danger" })</div></td></tr> }
+        </tbody></table></div>
+        <p class="table-no-results" hidden>No matching records. Try another search.</p>
+    }
+</section>
+

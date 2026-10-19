@@ -1,0 +1,40 @@
+@model OnlineVotingSystem.Models.CandidateStructure
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="management-panel card">
+
+    <div>
+        <h4>CandidateStructure</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Candidate.name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Candidate.name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Structure.name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Structure.name)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    </div>
+
+
+

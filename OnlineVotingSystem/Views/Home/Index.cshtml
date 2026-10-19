@@ -1,0 +1,37 @@
+@model IEnumerable<OnlineVotingSystem.Models.VotingSession>
+@{
+    ViewBag.Title = "Election centre";
+    ViewBag.PageClass = "landing-page";
+    var now = DateTime.Now;
+    var active = Model.FirstOrDefault(s => s.startDay <= now && s.endDate > now);
+    var upcoming = Model.Where(s => s.startDay > now).OrderBy(s => s.startDay).FirstOrDefault();
+}
+<section class="election-hero">
+    <div class="hero-copy">
+        <span class="hero-label"><span aria-hidden="true"></span> AFRICA UNIVERSITY ELECTIONS</span>
+        <h1>Your voice.<br /><em>Our next chapter.</em></h1>
+        <p>Choose the leaders who represent you. Explore their ideas, make an informed choice, and help shape your university.</p>
+        <div class="hero-actions"><a class="btn btn-primary btn-lg" href="@Url.Action("ViewCandidates")">@(active != null ? "View ballot & vote" : "Meet the candidates") <span aria-hidden="true">&rarr;</span></a><a class="hero-secondary" href="@Url.Action("ViewCouncilStructures")">Explore council positions</a></div>
+        <div class="hero-footnote"><span aria-hidden="true">&#10003;</span> One vote per position. Your participation matters.</div>
+    </div>
+    <aside class="election-status-card" aria-label="Election status">
+        <div class="status-card-top"><span class="eyebrow">ELECTION CENTRE</span><span class="status-icon" aria-hidden="true">&#10003;</span></div>
+        @if (active != null) {
+            <span class="badge rounded-pill text-bg-success">Voting is open</span><h2>Make your<br />voice count.</h2><p>Voting closes @active.endDate.Value.ToString("d MMM yyyy 'at' HH:mm") (server local time).</p><div class="election-countdown" data-countdown="@active.endDate.Value.ToUniversalTime().ToString("o")" aria-label="Time until voting closes"></div><a href="@Url.Action("ViewCandidates")" class="status-card-link">Go to your ballot &rarr;</a>
+        } else if (upcoming != null) {
+            <span class="badge rounded-pill upcoming-badge">Coming up next</span><h2>Your next<br />election awaits.</h2><p>Opens @upcoming.startDay.Value.ToString("d MMM yyyy 'at' HH:mm") (server local time).</p><div class="election-countdown" data-countdown="@upcoming.startDay.Value.ToUniversalTime().ToString("o")" aria-label="Time until voting opens"></div><a href="@Url.Action("ViewCandidates")" class="status-card-link">Explore candidates &rarr;</a>
+        } else {
+            <span class="badge rounded-pill upcoming-badge">Between elections</span><h2>Get ready for<br />what comes next.</h2><p>No election is open right now. The next election dates will be published here.</p><a href="@Url.Action("Contact")" class="status-card-link">How voting works &rarr;</a>
+        }
+    </aside>
+</section>
+<section class="explore-section">
+    <div class="section-heading"><div><p class="eyebrow">INFORMED CHOICES. STRONGER LEADERSHIP.</p><h2>Your election, in one place.</h2></div><p>Everything you need before you cast your vote.</p></div>
+    <nav class="navigation-cards" aria-label="Explore elections">
+        <a class="navigation-card card" href="@Url.Action("ViewCouncilStructures")"><span class="navigation-number">01 <span aria-hidden="true">&nearr;</span></span><h3>Council positions</h3><p>Understand the roles and responsibilities your representatives will take on.</p><span class="navigation-link">Explore positions &rarr;</span></a>
+        <a class="navigation-card card" href="@Url.Action("ViewCandidates")"><span class="navigation-number">02 <span aria-hidden="true">&nearr;</span></span><h3>Meet the candidates</h3><p>Get to know the candidates and read the ideas behind their campaigns.</p><span class="navigation-link">View candidates &rarr;</span></a>
+        <a class="navigation-card card" href="@Url.Action("ViewResults")"><span class="navigation-number">03 <span aria-hidden="true">&nearr;</span></span><h3>Follow the results</h3><p>View recorded votes and results for each student council position.</p><span class="navigation-link">View election results &rarr;</span></a>
+    </nav>
+</section>
+
+

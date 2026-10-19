@@ -1,0 +1,35 @@
+@model OnlineVotingSystem.Services.DemoDashboard
+@{ ViewBag.Title = "DEMO / SIMULATED election dashboard"; }
+<section class="page-intro"><p class="eyebrow">DEVELOPMENT ADMINISTRATION ONLY</p><h1>DEMO / SIMULATED election</h1><p>A repeatable fictional election. Nothing here represents real student votes.</p></section>
+@if(TempData["DemoError"]!=null){<div class="alert alert-danger" role="alert">@TempData["DemoError"]</div>}
+@if(TempData["DemoMessage"]!=null){<div class="alert alert-success" role="status">@TempData["DemoMessage"]</div>}
+<div class="demo-metrics"><div class="card"><span>Candidates</span><strong>@Model.Candidates / 19</strong></div><div class="card"><span>Dedicated voters</span><strong>@Model.Voters / 200</strong></div><div class="card"><span>Eligible including candidates</span><strong>@Model.Eligible</strong></div><div class="card"><span>Anonymous ballots</span><strong>@Model.Ballots</strong></div></div>
+<section class="demo-panel card"><h2 class="fs-5">1. Prepare the demonstration</h2><p class="field-hint">Setup is idempotent. Reset clears only this marked demo installation after a database backup; accounts and candidate nominations are retained.</p><div class="demo-controls">
+@using(Html.BeginForm("Seed","Demo",FormMethod.Post)){@Html.AntiForgeryToken()<button class="btn btn-primary" type="submit">Create / verify demo data</button>}
+@using(Html.BeginForm("Backup","Demo",FormMethod.Post)){@Html.AntiForgeryToken()<button class="btn btn-outline-primary" type="submit">Back up demo database</button>}
+@using(Html.BeginForm("Reset","Demo",FormMethod.Post,new{onsubmit="return confirm('Reset all DEMO ballots and runoff rounds? A database backup will be taken first.');"})){@Html.AntiForgeryToken()<button class="btn btn-outline-danger" type="submit">Reset demo simulation</button>}
+</div></section>
+<section class="demo-panel card"><h2 class="fs-5">2. Schedule and open contests</h2><p class="field-hint">Schedule all draft contests, including any approved runoff. Times are the web server's local time. Opening before the start or after the deadline is forbidden.</p>
+@using(Html.BeginForm("Schedule","Demo",FormMethod.Post,new{@class="demo-controls"})){
+@Html.AntiForgeryToken()<div><label for="start" class="form-label">Voting starts</label><input type="datetime-local" id="start" name="start" class="form-control" value="@DateTime.Now.AddMinutes(-1).ToString("yyyy-MM-ddTHH:mm")" required /></div><div><label for="end" class="form-label">Voting ends</label><input type="datetime-local" id="end" name="end" class="form-control" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-ddTHH:mm")" required /></div><button class="btn btn-primary" type="submit">Schedule drafts</button>}
+<div class="demo-controls mt-3">@using(Html.BeginForm("Open","Demo",FormMethod.Post)){@Html.AntiForgeryToken()<button class="btn btn-outline-primary" type="submit">Open scheduled contests</button>}@using(Html.BeginForm("Close","Demo",FormMethod.Post)){@Html.AntiForgeryToken()<button class="btn btn-outline-primary" type="submit">Close open contests</button>}</div></section>
+<section class="demo-panel card"><h2 class="fs-5">3. Cast synthetic ballots</h2><p class="field-hint">The simulator uses the same eligibility, duplicate and period checks as manual voting. It uses the dedicated synthetic voters, never the administrator. Preset results are 80/60/40/20 for President and 100/60/40 for each other base contest at 200 voters; Random uses the chosen seed; Tie deliberately creates runoff cases; ViceTie tests a tie for Vice President only.</p>
+@using(Html.BeginForm("Simulate","Demo",FormMethod.Post,new{@class="demo-controls"})){
+@Html.AntiForgeryToken()<div><label for="mode" class="form-label">Distribution</label><select class="form-select" id="mode" name="mode"><option>Preset</option><option>Random</option><option>Tie</option><option>ViceTie</option></select></div><div><label for="seed" class="form-label">Reproducible random seed</label><input class="form-control" type="number" id="seed" name="seed" value="2026" required /></div><div><label for="voters" class="form-label">Dedicated voters per contest</label><input class="form-control" type="number" id="voters" name="voters" min="1" max="200" value="200" required /></div><button class="btn btn-primary" type="submit">Simulate validated votes</button>}
+</section>
+<section class="demo-panel card"><h2 class="fs-5">4. Verify, resolve ties and publish</h2><p class="field-hint">Tallies below count persisted anonymous ballots and verify participation totals. They are provisional until closed and published. A tie creates no arbitrary winner; approve the proposed runoff, then schedule/open/simulate/close that round. President and Vice President come from the same presidential ballot.</p><div class="demo-controls">@using(Html.BeginForm("Publish","Demo",FormMethod.Post)){@Html.AntiForgeryToken()<button class="btn btn-primary" type="submit">Verify and publish DEMO results</button>}<a href="@Url.Action("Results","DemoPublic")" class="btn btn-outline-primary">Published DEMO results</a><a href="@Url.Action("Ballot","DemoPublic")" class="btn btn-outline-secondary">Manual DEMO ballot</a></div></section>
+@foreach(var contest in Model.Contests){
+<section class="demo-contest card"><div class="section-heading"><div><p class="eyebrow">DEMO / SIMULATED @(contest.ParentSessionId.HasValue?"RUNOFF":"BASE CONTEST") #@contest.SessionId</p><h2 class="fs-5">@contest.Name @(contest.ParentSessionId.HasValue?"/ "+contest.SeatLabel:"")</h2></div><span class="badge neutral-badge">@contest.Phase</span></div><p class="field-hint">@contest.Participation of @Model.Eligible eligible accounts participated (@(Model.Eligible==0?"0":(100.0*contest.Participation/Model.Eligible).ToString("0.0"))%). Candidates are eligible; the administrator is not.</p>
+<div class="table-responsive"><table class="table"><thead><tr><th>Fictional candidate</th><th>Persisted votes</th></tr></thead><tbody>@foreach(var choice in contest.Choices.OrderByDescending(c=>c.Votes)){<tr><td>@choice.Name</td><td>@choice.Votes</td></tr>}</tbody></table></div>
+@if(contest.Allocation.NoVotes){<p class="field-hint mt-3">No ballots: no winner can be declared.</p>}
+@if(contest.Allocation.Winners.Any()){<div class="demo-winners">@foreach(var winner in contest.Allocation.Winners){<p class="mb-1"><strong>@winner.Seat:</strong> @winner.Name @(contest.Phase=="Published"?"(published DEMO result)":"(provisional)")</p>}</div>}
+@if(contest.Allocation.TiedNominees.Any()){
+<div class="alert alert-warning mt-3">Tie for @contest.Allocation.PendingSeat. No alphabetical or ID tie-break is allowed.</div>
+if(contest.Phase=="Closed"&&!Model.Contests.Any(c=>c.ParentSessionId==contest.SessionId)){
+using(Html.BeginForm("Runoff","Demo",FormMethod.Post,new{onsubmit="return confirm('Approve a new DEMO runoff among the tied candidates?');"})){
+@Html.AntiForgeryToken()<input type="hidden" name="session" value="@contest.SessionId" /><button class="btn btn-outline-primary" type="submit">Approve runoff for tied candidates</button>}
+}
+}
+</section>
+}
+

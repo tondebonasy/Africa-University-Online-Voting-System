@@ -1,0 +1,57 @@
+@model OnlineVotingSystem.Models.VotingSession
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="management-panel card">
+
+    <div>
+        <h4>Voting Session</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.createdBy)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.createdBy)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.startDay)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.startDay)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.endDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.endDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.status)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    </div>
+
+
+
+

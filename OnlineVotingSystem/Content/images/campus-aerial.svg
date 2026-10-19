@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Campus gardens from above</title>
+  <desc id="desc">An original illustration of an imaginary campus, with terracotta roofs, green courtyards and warm evening light. It depicts no real university.</desc>
+  <!-- Copyright (c) 2026 Tonderai Bonasi. MIT licence: LICENSE.txt in this directory. -->
+  <defs>
+    <linearGradient id="land" x2="1" y2="1"><stop stop-color="#344c44"/><stop offset=".5" stop-color="#66775a"/><stop offset="1" stop-color="#253f3b"/></linearGradient>
+    <linearGradient id="roof" x2="0" y2="1"><stop stop-color="#ca8b62"/><stop offset="1" stop-color="#9e5c49"/></linearGradient>
+    <linearGradient id="light"><stop stop-color="#f0d5a0" stop-opacity=".24"/><stop offset="1" stop-color="#f0d5a0" stop-opacity="0"/></linearGradient>
+    <pattern id="grass" width="70" height="70" patternUnits="userSpaceOnUse"><path d="m7 15 5-3m26 39 6-2m12-40 3-2" stroke="#b4b77c" stroke-opacity=".12" stroke-width="2"/></pattern>
+    <pattern id="windows" width="25" height="20" patternUnits="userSpaceOnUse"><rect x="6" y="5" width="9" height="9" rx="1" fill="#455b55"/><path d="M10 5v9" stroke="#d4b688"/></pattern>
+    <filter id="shadow" x="-.3" y="-.3" width="1.7" height="1.7"><feDropShadow dx="18" dy="24" stdDeviation="14" flood-color="#172d2b" flood-opacity=".5"/></filter>
+    <g id="tree"><ellipse cy="12" rx="25" ry="14" fill="#203c32" opacity=".35"/><circle r="24" fill="#355949"/><circle cx="-6" cy="-6" r="19" fill="#547359"/><circle cx="-10" cy="-11" r="11" fill="#7c8c62" opacity=".7"/></g>
+    <g id="hall"><rect x="6" y="20" width="258" height="72" fill="#c5b294"/><rect x="15" y="56" width="240" height="28" fill="url(#windows)"/><path d="M-8 26 17 0h230l29 26Z" fill="url(#roof)"/><path d="M17 0h230l-13 10H8Z" fill="#e0aa78"/><path d="M-8 26h284" stroke="#713e38" stroke-width="4"/></g>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#land)"/>
+  <path d="M0 20Q420 300 700 60t670 40 550-30V0H0ZM0 1000Q480 760 730 1020t1190-70v130H0Z" fill="#253f38" opacity=".7"/>
+  <rect width="1920" height="1080" fill="url(#grass)"/>
+  <g transform="translate(960 540) rotate(-18) translate(-960 -540)">
+    <path d="M-100 740H2020M1000-100V1180" fill="none" stroke="#b6a388" stroke-width="66"/>
+    <path d="M-100 740H2020M1000-100V1180" fill="none" stroke="#d4c1a0" stroke-width="48"/>
+    <rect x="550" y="240" width="720" height="400" rx="16" fill="#c9b89b"/>
+    <rect x="603" y="288" width="610" height="300" rx="4" fill="#728466"/>
+    <path d="m603 288 610 300m0-300L603 588" stroke="#cfbf9c" stroke-width="16"/>
+    <circle cx="908" cy="438" r="64" fill="#dfcba6"/><circle cx="908" cy="438" r="42" fill="#4d7775"/><circle cx="908" cy="438" r="26" fill="#73928b"/><circle cx="908" cy="438" r="6" fill="#d4c7a5"/>
+    <g filter="url(#shadow)"><use href="#hall" x="560" y="160"/><use href="#hall" x="950" y="160"/><use href="#hall" x="560" y="580"/><use href="#hall" x="950" y="580"/><use href="#hall" transform="translate(529 305) rotate(90)"/><use href="#hall" transform="translate(1330 305) rotate(90)"/>
+      <use href="#hall" x="140" y="290"/><use href="#hall" x="120" y="470"/><use href="#hall" x="1470" y="240"/><use href="#hall" x="1490" y="460"/>
+      <use href="#hall" x="500" y="860"/><use href="#hall" x="1170" y="900"/>
+      <path d="M885 810h225v142H885Z" fill="#c3b08c"/><path d="m863 826 134-65 135 65-135 65Z" fill="url(#roof)"/><path d="m997 761 135 65-135 15Z" fill="#d09a6b"/>
+    </g>
+    <g><use href="#tree" x="480" y="180"/><use href="#tree" x="400" y="240"/><use href="#tree" x="400" y="650"/><use href="#tree" x="470" y="640"/><use href="#tree" x="1350" y="200"/><use href="#tree" x="1430" y="155"/><use href="#tree" x="1410" y="630"/><use href="#tree" x="1500" y="640"/>
+      <use href="#tree" x="650" y="350"/><use href="#tree" x="650" y="530"/><use href="#tree" x="1160" y="350"/><use href="#tree" x="1160" y="530"/>
+      <use href="#tree" x="150" y="180"/><use href="#tree" x="250" y="140"/><use href="#tree" x="1650" y="100"/><use href="#tree" x="1750" y="600"/><use href="#tree" x="300" y="880"/><use href="#tree" x="350" y="980"/><use href="#tree" x="1550" y="950"/>
+    </g>
+    <g fill="#b6a477" opacity=".65"><circle cx="550" cy="740" r="5"/><circle cx="740" cy="740" r="5"/><circle cx="1250" cy="740" r="5"/><circle cx="1470" cy="740" r="5"/></g>
+  </g>
+  <rect width="1920" height="1080" fill="url(#light)"/>
+</svg>

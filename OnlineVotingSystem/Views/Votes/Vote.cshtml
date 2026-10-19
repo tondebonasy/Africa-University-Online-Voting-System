@@ -1,0 +1,12 @@
+@{
+    ViewBag.Title = "Voting receipt";
+    var message = TempData["VoteMessage"] as string;
+    var error = (TempData["VoteError"] as bool?) ?? false;
+}
+<section class="election-panel">
+    <h1>Voting receipt</h1>
+    <div class="alert @(error ? "alert-warning" : "alert-success")" role="status">@(message ?? "Choose a candidate to cast your vote.")</div>
+    <a class="btn btn-primary" href="@Url.Action("ViewCandidates", "Home")">Back to candidates</a>
+</section>
+
+

@@ -1,0 +1,15 @@
+@model OnlineVotingSystem.Models.AspNetUser
+@using OnlineVotingSystem.Models
+@{ ViewBag.Title = "Student details"; var roles = new List<AspNetRole>(); using (var roleContext = new OnlineVotingSystemEntities()) { roles = roleContext.AspNetRoles.ToList(); } }
+<section class="management-panel card">
+    <div class="management-toolbar"><div><h2 class="fs-5 mb-2">@Model.UserName</h2><p class="field-hint">Registered student account</p></div><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#manageRoles">Manage roles</button></div>
+    <dl class="dl-horizontal"><dt>Student ID</dt><dd>@Model.UserName</dd><dt>Email</dt><dd>@Model.Email</dd><dt>Phone number</dt><dd>@Model.PhoneNumber</dd><dt>Email confirmed</dt><dd>@(Model.EmailConfirmed ? "Yes" : "No")</dd><dt>Two-factor authentication</dt><dd>@(Model.TwoFactorEnabled ? "Enabled" : "Not enabled")</dd><dt>Assigned roles</dt><dd>@if (!Model.AspNetRoles.Any()) { <span>No administrative roles</span> } else { foreach (var role in Model.AspNetRoles) { <span class="badge neutral-badge me-1">@role.Name</span> } }</dd></dl>
+    <div class="d-flex gap-2 mt-3">@Html.ActionLink("Edit account", "Edit", new { id = Model.Id }, new { @class = "btn btn-outline-primary" }) @Html.ActionLink("Back to students", "Index", null, new { @class = "btn btn-outline-secondary" })</div>
+</section>
+<div class="modal fade" id="manageRoles" tabindex="-1" aria-labelledby="manageRolesTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h2 class="modal-title" id="manageRolesTitle">Manage student roles</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+@using (Html.BeginForm("ManageRoles", "Users", FormMethod.Post)) {
+    @Html.AntiForgeryToken()<input type="hidden" name="userId" value="@Model.Id" />
+    <div class="modal-body"><p class="field-hint mt-0 mb-3">Selecting an assigned role removes it. Selecting an unassigned role adds it.</p><label class="form-label" for="roleId">Role</label><select name="roleId" id="roleId" class="form-select">@foreach (var role in roles) { <option value="@role.Id">@role.Name @(Model.AspNetRoles.Any(r => r.Id == role.Id) ? "(assigned)" : "")</option> }</select></div>
+    <div class="modal-footer"><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary" type="submit">Update role</button></div>
+}
+</div></div></div>

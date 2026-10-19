@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7ad8007125fe4e439ebd4a60ac6bb1c1" Name="Diagram1" ZoomLevel="34">
+        <EntityTypeShape EntityType="online_voting_systemModel.AspNetRole" Width="1.5" PointX="10" PointY="0.875" />
+        <EntityTypeShape EntityType="online_voting_systemModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="2.375" />
+        <EntityTypeShape EntityType="online_voting_systemModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="5.125" />
+        <EntityTypeShape EntityType="online_voting_systemModel.AspNetUser" Width="1.5" PointX="3.125" PointY="2.625" />
+        <EntityTypeShape EntityType="online_voting_systemModel.Candidate" Width="1.5" PointX="9.625" PointY="5.875" />
+        <EntityTypeShape EntityType="online_voting_systemModel.CandidateStructure" Width="1.5" PointX="12" PointY="6.125" />
+        <EntityTypeShape EntityType="online_voting_systemModel.Chat" Width="1.5" PointX="12" PointY="0.875" />
+        <EntityTypeShape EntityType="online_voting_systemModel.Structure" Width="1.5" PointX="9.875" PointY="3.25" />
+        <EntityTypeShape EntityType="online_voting_systemModel.Vote" Width="1.5" PointX="12" PointY="3.125" />
+        <EntityTypeShape EntityType="online_voting_systemModel.VotingSession" Width="1.5" PointX="7.75" PointY="0.75" />
+        <AssociationConnector Association="online_voting_systemModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="online_voting_systemModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="online_voting_systemModel.FK_Candidate_AspNetUsers" />
+        <AssociationConnector Association="online_voting_systemModel.FK_CandidateStructure_Candidate" />
+        <AssociationConnector Association="online_voting_systemModel.FK_Votes_Candidate" />
+        <AssociationConnector Association="online_voting_systemModel.FK_CandidateStructure_Structure" />
+        <AssociationConnector Association="online_voting_systemModel.AspNetUserRoles" />
+        <AssociationConnector Association="online_voting_systemModel.FK_Votes_VotingSession" />
+        <EntityTypeShape EntityType="online_voting_systemModel.userVote" Width="1.5" PointX="7.375" PointY="3.75" />
+        <AssociationConnector Association="online_voting_systemModel.FK_userVotes_CandidateStructure" />
+        <AssociationConnector Association="online_voting_systemModel.FK_userVotes_VotingSession" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

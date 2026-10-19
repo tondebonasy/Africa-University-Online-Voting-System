@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="116" viewBox="0 0 120 116" role="img" aria-labelledby="title desc">
+  <title id="title">Student election portal emblem</title>
+  <desc id="desc">An original burgundy and gold emblem combining an open book with a voting check.</desc>
+  <!-- Copyright (c) 2026 Tonderai Bonasi. MIT licence: LICENSE.txt in this directory. -->
+  <rect x="2" y="2" width="116" height="112" rx="26" fill="#fffaf4"/>
+  <path d="M60 12 101 27v30c0 23-19 38-41 48C38 95 19 80 19 57V27Z" fill="#831c38"/>
+  <path d="m60 19 34 13v25c0 19-15 32-34 41-19-9-34-22-34-41V32Z" fill="none" stroke="#d8b77c" stroke-width="1.5"/>
+  <path d="M35 49c9-3 17-1 25 4 8-5 16-7 25-4v26c-9-3-17-1-25 4-8-5-16-7-25-4Z" fill="#fffaf4"/>
+  <path d="M60 54v23M41 57c5-1 9 0 13 2m-13 5c5-1 9 0 13 2m12-7c4-2 8-3 13-2m-13 9c4-2 8-3 13-2" fill="none" stroke="#b89158" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="60" cy="36" r="12" fill="#d8b77c"/>
+  <path d="m54 36 4 4 8-9" fill="none" stroke="#56142a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

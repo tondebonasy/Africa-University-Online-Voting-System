@@ -1,0 +1,67 @@
+# Private local deployments and databases
+.demo-local/
+.vs/
+*.bak
+*.mdf
+*.ldf
+*.accdb
+*.mdb
+*.pfx
+*.p12
+*.key
+.env
+.env.*
+!.env.example
+
+# Restorable dependencies and build output
+packages/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+
+# Legacy data export and user-supplied documents
+/OnlineVotingSystem.sql
+/OnlineVotingSystem/Uploads/*
+!/OnlineVotingSystem/Uploads/.gitkeep
+
+# Duplicate legacy project snapshots (AssemblyInfo.cs is required)
+/OnlineVotingSystem/Properties/*.csproj
+/OnlineVotingSystem/Properties/*.csproj.user
+/OnlineVotingSystem/Properties/packages.config
+/OnlineVotingSystem/Properties/Global.asax*
+/OnlineVotingSystem/Properties/Startup.cs
+/OnlineVotingSystem/Properties/Web.*
+/OnlineVotingSystem/Properties/favicon.ico
+/ReadMe!.txt
+
+# Local verification artifacts and design previews
+Verification/scratch_*/
+Verification/browser-check.json
+Verification/*last-run.txt
+/*.png
+
+# Private deployment and editor configuration
+**/App_Data/*
+!**/App_Data/.gitkeep
+*.pubxml
+*.pubxml.user
+*.publishsettings
+*.local.config
+*.secrets.json
+*.log
+.vscode/
+.idea/
+
+# Original image assets retained privately; never publish without permission
+.private-assets/
+/OnlineVotingSystem/Content/images/Africa_University_Logo.*
+/OnlineVotingSystem/Content/images/africa_university_arial_view.jpg
+/OnlineVotingSystem/Content/images/Login.jpg
+/OnlineVotingSystem/Content/images/church2.jpg
+/OnlineVotingSystem/Content/images/logo.jpeg
+/OnlineVotingSystem/favicon.ico
+/OnlineVotingSystem/Content/favicon.ico

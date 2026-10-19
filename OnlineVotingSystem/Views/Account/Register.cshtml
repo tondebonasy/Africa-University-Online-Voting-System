@@ -1,0 +1,22 @@
+@model OnlineVotingSystem.Models.RegisterViewModel
+@{ ViewBag.Title = "Create account"; Layout = "~/Views/Shared/AuthLayout.cshtml"; }
+<div class="auth-heading"><h1>Create your account</h1><p>Register to participate in student elections.</p></div>
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "student-form", role = "form" })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "validation-summary text-danger", role = "alert" })
+    <div class="form-pair">
+        <div class="form-group">@Html.LabelFor(m => m.StudentNumber, "Student ID") @Html.TextBoxFor(m => m.StudentNumber, new { @class = "form-control", autocomplete = "username", required = "required" })</div>
+        <div class="form-group">@Html.LabelFor(m => m.PhoneNumber, "Phone number") @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", type = "tel", autocomplete = "tel", required = "required" })</div>
+    </div>
+    <div class="form-group">@Html.LabelFor(m => m.Email) @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", autocomplete = "email", required = "required" })</div>
+    <div class="form-pair">
+        <div class="form-group">@Html.LabelFor(m => m.Password) @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "new-password", required = "required", aria_describedby = "password-help" })</div>
+        <div class="form-group">@Html.LabelFor(m => m.ConfirmPassword, "Confirm password") @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", autocomplete = "new-password", required = "required" })</div>
+    </div>
+    <small id="password-help" class="field-hint password-help">At least 6 characters, including uppercase, lowercase, a number and a symbol.</small>
+    <button class="btn btn-primary w-100" type="submit">Create account</button>
+    <p class="auth-switch">Already registered? @Html.ActionLink("Sign in", "Login")</p>
+}
+@section scripts { @Scripts.Render("~/bundles/jqueryval") }
+
+

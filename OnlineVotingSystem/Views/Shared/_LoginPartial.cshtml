@@ -1,0 +1,15 @@
+@using Microsoft.AspNet.Identity
+<div class="account-nav">
+@if (Request.IsAuthenticated) {
+    @Html.ActionLink("My account", "Index", "Manage")
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post)) {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-outline-secondary">Sign out</button>
+    }
+} else {
+    @Html.ActionLink("Register", "Register", "Account", null, new { @class = "register-link" })
+    @Html.ActionLink("Sign in", "Login", "Account", null, new { @class = "btn btn-primary" })
+}
+</div>
+
+

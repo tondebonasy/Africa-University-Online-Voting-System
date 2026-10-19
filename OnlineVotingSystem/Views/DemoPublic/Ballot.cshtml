@@ -1,0 +1,9 @@
+@model OnlineVotingSystem.Services.DemoDashboard
+@{ ViewBag.Title="DEMO / SIMULATED ballot"; }
+<section class="page-intro"><p class="eyebrow">FICTIONAL ELECTION</p><h1>DEMO / SIMULATED ballot</h1><p>Only provisioned synthetic voters and candidate accounts are eligible. The administrator is not a voter.</p></section>
+<div class="ballot-tools card"><label for="candidate-search" class="form-label">Find a candidate or council position</label><input type="search" id="candidate-search" class="form-control" placeholder="Search the fictional candidates" /><p id="candidate-search-status" class="field-hint mb-0" role="status"></p></div>
+<div class="row g-4">@foreach(var contest in Model.Contests.Where(c=>!c.ParentSessionId.HasValue||c.Phase=="Open")){foreach(var choice in contest.Choices){
+<div class="col-md-6 col-xl-4" data-candidate-card><article class="candidate-card card h-100"><p class="eyebrow">DEMO / SIMULATED · @contest.Name</p><h2>@choice.Name</h2><p class="badge neutral-badge align-self-start">@contest.Phase @(contest.ParentSessionId.HasValue?"runoff":"")</p><details class="demo-manifesto mb-3"><summary>Read fictional manifesto</summary><p class="mt-3">@choice.Manifesto</p></details>
+@if(contest.Phase=="Open"&&contest.Start<=DateTime.Now&&contest.End>DateTime.Now){using(Html.BeginForm("Vote","Votes",FormMethod.Post,new{onsubmit="return confirm('Cast this DEMO vote? Your choice cannot be changed.');"})){@Html.AntiForgeryToken()<input type="hidden" name="id" value="@choice.NominationId" /><button class="btn btn-primary w-100" type="submit">Cast DEMO vote</button>}}else{<p class="field-hint">This contest is not accepting votes.</p>}
+</article></div>
+}}</div>

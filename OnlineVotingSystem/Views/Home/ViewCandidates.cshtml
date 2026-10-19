@@ -1,0 +1,38 @@
+@model IEnumerable<OnlineVotingSystem.Models.Candidate>
+@{ ViewBag.Title = "Candidates & ballot"; }
+<section class="page-intro"><p class="eyebrow">YOUR STUDENT REPRESENTATIVES</p><h1>Meet your candidates.</h1><p>Explore their ideas. Choose one representative for each council position.</p></section>
+@if (!(bool)ViewBag.VotingOpen) { <div class="alert alert-info d-flex align-items-center gap-3" role="status"><span class="notice-symbol" aria-hidden="true">i</span><div><strong>Voting is currently closed.</strong><br />You can still browse candidates and read their manifestos.</div></div> }
+@if (!Model.Any()) {
+    <div class="empty-state card"><span class="empty-symbol" aria-hidden="true">&#10003;</span><h2>Candidates will appear here.</h2><p>Nominations have not been published yet. Check back when the next election is announced.</p><a class="btn btn-outline-primary" href="@Url.Action("Index")">Back to overview</a></div>
+} else {
+    <div class="ballot-tools card"><label class="form-label" for="candidate-search">Find a candidate or council position</label><input type="search" id="candidate-search" class="form-control" placeholder="Search by name or position" /><p id="candidate-search-status" class="field-hint mb-0" role="status"></p></div>
+}
+<div class="row g-4">
+@foreach (var candidate in Model) {
+    foreach (var nomination in candidate.CandidateStructures) {
+        var manifesto = !String.IsNullOrWhiteSpace(candidate.manifesto) && (candidate.manifesto.StartsWith("~/Uploads/", StringComparison.OrdinalIgnoreCase) || candidate.manifesto.StartsWith("/Uploads/", StringComparison.OrdinalIgnoreCase));
+        var previewId = "manifesto-" + nomination.id;
+    <div class="col-md-6 col-xl-4" data-candidate-card><article class="candidate-card card h-100">
+        <div class="candidate-topline"><span class="candidate-avatar" aria-hidden="true">@((candidate.name ?? "?").Substring(0, Math.Min(1, (candidate.name ?? "?").Length)).ToUpperInvariant())</span><span class="badge position-badge">@nomination.Structure.name</span></div>
+        <h2>@candidate.name</h2><p class="candidate-description">Candidate for @nomination.Structure.name</p>
+        <div class="candidate-actions">
+        @if (manifesto) {
+            if (candidate.manifesto.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase)) {
+                <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#@previewId">Read manifesto <span aria-hidden="true">&nearr;</span></button>
+            } else { <a href="@Url.Content(candidate.manifesto)" class="btn btn-outline-primary w-100" download>Download manifesto &darr;</a> }
+        } else { <p class="field-hint">No manifesto has been uploaded.</p> }
+        @if ((bool)ViewBag.VotingOpen) {
+            using (Html.BeginForm("Vote", "Votes", FormMethod.Post, new { data_vote_form = "true", data_candidate_name = candidate.name, data_position_name = nomination.Structure.name })) {
+                @Html.AntiForgeryToken()<input type="hidden" name="id" value="@nomination.id" /><button type="submit" class="btn btn-primary w-100">Select candidate &rarr;</button>
+            }
+        }
+        </div>
+    </article></div>
+    if (manifesto && candidate.manifesto.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase)) {
+        <div class="modal fade" id="@previewId" tabindex="-1" aria-labelledby="@(previewId + "-title")" aria-hidden="true"><div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h2 class="modal-title fs-5" id="@(previewId + "-title")">@candidate.name &middot; Manifesto</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><object data="@Url.Content(candidate.manifesto)" type="application/pdf" class="manifesto-preview"><p>Your browser cannot preview this PDF. Use the download button below.</p></object></div><div class="modal-footer"><a class="btn btn-outline-primary" href="@Url.Content(candidate.manifesto)" download>Download PDF</a><button class="btn btn-primary" type="button" data-bs-dismiss="modal">Done reading</button></div></div></div></div>
+    }
+    }
+}
+</div>
+<div class="modal fade" id="voteConfirmation" tabindex="-1" aria-labelledby="vote-confirm-title" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h2 class="modal-title fs-5" id="vote-confirm-title">Review your choice</h2><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><p>You are voting for <strong id="vote-candidate-name"></strong> as <strong id="vote-position-name"></strong>.</p><div class="alert alert-warning mb-0">You can vote once per position. Your choice cannot be changed after submission.</div></div><div class="modal-footer"><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Go back</button><button class="btn btn-primary" type="button" id="confirm-vote">Confirm my vote</button></div></div></div></div>
+

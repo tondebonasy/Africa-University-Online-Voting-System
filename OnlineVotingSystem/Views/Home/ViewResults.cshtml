@@ -1,0 +1,18 @@
+@model IEnumerable<OnlineVotingSystem.Models.userVote>
+@{ ViewBag.Title = "Election results"; var election = ViewBag.Election as OnlineVotingSystem.Models.VotingSession; }
+<section class="page-intro"><p class="eyebrow">ELECTION RESULTS</p><h1>Every voice counts.</h1><p>Recorded votes, organised by council position.</p></section>
+@if (election == null) { <div class="empty-state card"><h2>Results are not available yet.</h2><p>No elections have been scheduled. Results will appear here once voting begins.</p><a class="btn btn-outline-primary" href="@Url.Action("Index")">Back to overview</a></div> }
+else {
+    <div class="results-summary card"><div><span class="eyebrow">ELECTION #@election.Id</span><h2>@Model.Count() <small>votes recorded</small></h2></div><div><span class="field-hint">Voting ends</span><strong>@election.endDate</strong></div><span class="badge @(election.endDate > DateTime.Now ? "upcoming-badge" : "text-bg-success")">@(election.endDate > DateTime.Now ? "Provisional results" : "Voting closed")</span></div>
+    if (!Model.Any()) { <div class="empty-state card"><h2>The first vote is still to come.</h2><p>No votes have been recorded for this election.</p></div> }
+    foreach (var position in Model.Where(v => v.CandidateStructure != null).GroupBy(v => v.CandidateStructure.Structure.name)) {
+        <section class="results-position card"><div class="section-heading"><h2>@position.Key</h2><span class="field-hint">@position.Count() votes</span></div>
+        <div class="table-responsive"><table class="table align-middle"><thead><tr><th scope="col">Candidate</th><th scope="col">Votes</th><th scope="col">Share of position votes</th></tr></thead><tbody>
+        @foreach (var result in position.GroupBy(v => new { v.CandidateStructure.candidateId, v.CandidateStructure.Candidate.name }).OrderByDescending(g => g.Count())) {
+            var share = (100.0 * result.Count() / position.Count()).ToString("0.0", System.Globalization.CultureInfo.InvariantCulture);
+            <tr><th scope="row">@result.Key.name</th><td><strong>@result.Count()</strong></td><td><div class="result-share"><div class="progress" role="progressbar" aria-label="@result.Key.name vote share" aria-valuenow="@share" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:@(share)%"></div></div><span>@share%</span></div></td></tr>
+        }
+        </tbody></table></div></section>
+    }
+}
+

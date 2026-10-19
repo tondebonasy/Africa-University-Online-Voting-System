@@ -1,0 +1,12 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.PageClass = "login-page";
+    ViewBag.IsAccountPage = true;
+}
+<div class="account-page">
+    <section class="auth-panel card" aria-label="Student account access"><div class="account-accent" aria-hidden="true"></div><div class="card-body">@RenderBody()</div></section>
+    <p class="account-caption">Africa University &middot; Student election portal</p>
+</div>
+@section scripts { @RenderSection("scripts", required: false) }
+
+

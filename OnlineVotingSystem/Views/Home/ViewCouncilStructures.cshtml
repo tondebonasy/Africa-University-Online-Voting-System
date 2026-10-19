@@ -1,0 +1,6 @@
+@model IEnumerable<OnlineVotingSystem.Models.Structure>
+@{ ViewBag.Title = "Council positions"; }
+<section class="page-intro"><p class="eyebrow">STUDENT COUNCIL</p><h1>Roles that shape your campus.</h1><p>Explore the positions your student representatives will fill.</p></section>
+@if (!Model.Any()) { <div class="empty-state card"><h2>Council positions are coming soon.</h2><p>Positions will appear here once the election committee publishes them.</p></div> }
+<div class="row g-4">@foreach (var item in Model) { <div class="col-md-6 col-xl-4"><a class="position-card card h-100" href="@Url.Action("ViewCandidates")"><span class="eyebrow">COUNCIL POSITION @item.rank</span><h2>@item.name</h2><span>Explore candidates &rarr;</span></a></div> }</div>
+

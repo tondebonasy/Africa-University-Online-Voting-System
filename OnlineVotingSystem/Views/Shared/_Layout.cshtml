@@ -1,0 +1,74 @@
+@{
+    var isAccountPage = (ViewBag.IsAccountPage as bool?) ?? false;
+    var currentController = Convert.ToString(ViewContext.RouteData.Values["controller"]);
+    var currentAction = Convert.ToString(ViewContext.RouteData.Values["action"]);
+    var areas = new[] { new { Controller = "VotingSessions", Label = "Elections" }, new { Controller = "Candidates", Label = "Candidates" }, new { Controller = "CandidateStructures", Label = "Nominations" }, new { Controller = "Structures", Label = "Council positions" }, new { Controller = "Users", Label = "Students" }, new { Controller = "Roles", Label = "Access roles" } };
+    var area = areas.FirstOrDefault(a => String.Equals(a.Controller, currentController, StringComparison.OrdinalIgnoreCase));
+    var isAdmin = User.IsInRole("ADMIN") || User.IsInRole("SUPER_ADMIN");
+    var isWorkspace = isAdmin && area != null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#931c38" />
+    <link rel="icon" type="image/svg+xml" href="@Url.Content("~/Content/images/election-mark.svg")" />
+    <title>@ViewBag.Title | Africa University Elections</title>
+    <link rel="stylesheet" href="@Url.Content("~/Content/fonts/manrope.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.css?v=5.3.8")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css?v=public-assets-1")" />
+</head>
+<body class="@ViewBag.PageClass @(isAccountPage ? "account-body" : "") @(isWorkspace ? "workspace-body" : "")">
+@if (OnlineVotingSystem.Services.DemoEnvironment.Enabled) { <div class="demo-banner" role="status"><strong>DEMO / SIMULATED</strong> &middot; Fictional candidates and synthetic voters. Local isolated demonstration.</div> }
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="institution-bar"><div class="container-xl"><span>AFRICA UNIVERSITY</span><span>STUDENT ELECTIONS</span></div></div>
+<header class="site-header">
+    <div class="container-xl header-inner">
+        <a class="university-brand" href="@Url.Action("Index", "Home")"><img src="@Url.Content("~/Content/images/election-mark.svg")" alt="Student election portal emblem" width="60" height="58" /><span><strong>Africa University</strong><small>Student election portal</small></span></a>
+        @if (isAccountPage) {
+            <a class="header-back" href="@Url.Action("Index", "Home")">&larr; Election overview</a>
+        } else {
+            <button class="navbar-toggler menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNavigation" aria-controls="primaryNavigation" aria-expanded="false" aria-label="Toggle navigation"><span aria-hidden="true">&#9776;</span><span>Menu</span></button>
+            <div class="header-navigation collapse" id="primaryNavigation">
+                <nav class="main-nav" aria-label="Main navigation">
+                @foreach (var item in new[] { new { Label = "Overview", Action = "Index" }, new { Label = "Candidates", Action = "ViewCandidates" }, new { Label = "Positions", Action = "ViewCouncilStructures" }, new { Label = "Results", Action = "ViewResults" } }) {
+                    var selected = currentController == "Home" && currentAction == item.Action;
+                    <a href="@Url.Action(item.Action, "Home")" class="@(selected ? "is-active" : "")" aria-current="@(selected ? "page" : null)">@item.Label</a>
+                }
+                @if (OnlineVotingSystem.Services.DemoEnvironment.Enabled && User.IsInRole("DEMO_ADMIN")) { <a href="@Url.Action("Index", "Demo")">DEMO dashboard</a> }
+                @if (isAdmin && !OnlineVotingSystem.Services.DemoEnvironment.Enabled) { <a class="@(isWorkspace ? "is-active" : "")" href="@Url.Action("Index", "VotingSessions")">Administration</a> }
+                </nav>
+                @Html.Partial("_LoginPartial")
+            </div>
+        }
+    </div>
+</header>
+@if (isWorkspace) {
+<div class="workspace-shell">
+    <aside class="workspace-sidebar" aria-label="Administration">
+        <p class="eyebrow">ELECTION COMMITTEE</p>
+        <nav aria-label="Administration sections">
+        @foreach (var item in areas) { <a class="@(item.Controller == currentController ? "is-active" : "")" href="@Url.Action("Index", item.Controller)" aria-current="@(item.Controller == currentController ? "page" : null)">@item.Label <span aria-hidden="true">&rsaquo;</span></a> }
+        </nav>
+        <a class="sidebar-help" href="@Url.Action("Contact", "Home")">Need help? &rarr;</a>
+    </aside>
+    <main id="main-content" class="workspace-main">
+        <div class="workspace-heading"><div><p class="eyebrow">ADMINISTRATION / @area.Label</p><h1>@(currentAction == "Index" ? area.Label : currentAction + " / " + area.Label)</h1></div><span class="workspace-badge">Election management</span></div>
+        @RenderBody()
+    </main>
+</div>
+} else {
+    <main id="main-content" class="container-xl body-content">@RenderBody()</main>
+}
+<footer class="site-footer"><div class="container-xl"><span>&copy; @DateTime.Now.Year Africa University</span><nav aria-label="Footer"><a href="@Url.Action("Contact", "Home")">Election help</a><a href="@Url.Action("About", "Home")">About the portal</a></nav><small>Student voices. Shared leadership.</small></div></footer>
+@Scripts.Render("~/bundles/jquery")
+<script src="@Url.Content("~/Scripts/bootstrap.js?v=5.3.8")"></script>
+<script src="@Url.Content("~/Scripts/portal.js?v=bs5-1")" defer></script>
+@RenderSection("scripts", required: false)
+</body>
+</html>
+
+
+
+

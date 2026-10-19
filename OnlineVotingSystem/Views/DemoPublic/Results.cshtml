@@ -1,0 +1,10 @@
+@model OnlineVotingSystem.Services.DemoDashboard
+@{ ViewBag.Title="DEMO / SIMULATED results"; }
+<section class="page-intro"><p class="eyebrow">FICTIONAL DEMONSTRATION</p><h1>DEMO / SIMULATED results</h1><p>These are synthetic demonstration votes, not genuine student election results.</p></section>
+@if(!Model.Published){<div class="empty-state card"><h2>DEMO results have not been published.</h2><p>The administrator must close contests, verify vote integrity and resolve ties through approved runoffs first.</p></div>}
+else{
+foreach(var contest in Model.Contests.Where(c=>!c.ParentSessionId.HasValue)){
+<section class="demo-contest card"><h2 class="fs-4">@contest.Name</h2><p class="field-hint">DEMO / SIMULATED · @contest.Participation / @Model.Eligible eligible accounts participated (@((100.0*contest.Participation/Model.Eligible).ToString("0.0"))%).</p><div class="demo-winners">@foreach(var winner in contest.Allocation.Winners){<p class="mb-1"><strong>@winner.Seat:</strong> @winner.Name</p>}</div><div class="table-responsive"><table class="table"><thead><tr><th>Fictional candidate</th><th>Base-contest votes</th></tr></thead><tbody>@foreach(var choice in contest.Choices.OrderByDescending(c=>c.Votes)){<tr><td>@choice.Name</td><td>@choice.Votes</td></tr>}</tbody></table></div></section>
+}
+if(Model.Contests.Any(c=>c.ParentSessionId.HasValue)){<section class="demo-panel card"><h2 class="fs-5">DEMO runoff vote totals</h2>@foreach(var round in Model.Contests.Where(c=>c.ParentSessionId.HasValue)){<h3 class="fs-6 mt-3">@round.Name / @round.SeatLabel</h3><ul>@foreach(var choice in round.Choices){<li>@choice.Name: @choice.Votes simulated votes</li>}</ul>}</section>}
+}

@@ -1,0 +1,28 @@
+@model OnlineVotingSystem.Models.LoginViewModel
+@{
+    ViewBag.Title = "Sign in";
+    Layout = "~/Views/Shared/AuthLayout.cshtml";
+}
+<div class="auth-heading"><h1>Student sign in</h1><p>Access your student election account.</p></div>
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "student-form", role = "form" })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "validation-summary text-danger", role = "alert" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.StudentNumber, "Student ID")
+        @Html.TextBoxFor(m => m.StudentNumber, new { @class = "form-control", placeholder = "Enter your student ID", autocomplete = "username", required = "required" })
+        @Html.ValidationMessageFor(m => m.StudentNumber, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <div class="field-heading">@Html.LabelFor(m => m.Password) @Html.ActionLink("Forgot password?", "ForgotPassword")</div>
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password", autocomplete = "current-password", required = "required" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+    </div>
+    <label class="remember-option">@Html.CheckBoxFor(m => m.RememberMe) <span>Keep me signed in on this device</span></label>
+    <button type="submit" class="btn btn-primary w-100">Sign in <span aria-hidden="true">&rarr;</span></button>
+    <p class="auth-switch">New to the portal? @Html.ActionLink("Create an account", "Register")</p>
+}
+
+@section scripts { @Scripts.Render("~/bundles/jqueryval") }
+
+
+
